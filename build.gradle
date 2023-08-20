@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+defaultTasks 'clean', 'test'
+
+group 'org.appium.starterkit'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "io.appium:java-client:${appiumJavaClientVersion}"
+    testImplementation "org.testng:testng:${testNGVersion}"
+}
+
+test {
+
+    useTestNG() {
+
+        useDefaultListeners = false
+        testLogging.showStandardStreams = true
+
+        if (project.hasProperty('groups')) {
+            includeGroups((String) project.findProperty('groups'))
+            excludeGroups 'flaky', 'oos'
+        }
+
+        options {
+            setParallel('methods')
+            setThreadCount(5)
+        }
+
+        outputDirectory = file("$projectDir/testNGOutput")
+
+    }
+
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+
+}
