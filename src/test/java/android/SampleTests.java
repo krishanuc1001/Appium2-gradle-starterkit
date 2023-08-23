@@ -8,6 +8,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.GestureUtils;
 
@@ -99,6 +100,38 @@ public class SampleTests {
         WebElement drawingScreen = androidDriver.findElement(AppiumBy.xpath("//android.view.ViewGroup[@content-desc=\"drawing screen\"]/android.view.ViewGroup[2]/android.view.ViewGroup/android.webkit.WebView"));
 
         GestureUtils.zoom(drawingScreen, androidDriver);
+    }
+
+    @Test(groups = "verticalScrollTest")
+    public void verifySwipeScroll() throws MalformedURLException {
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("Krish_Pixel_4_API_30");
+        options.setApp(System.getProperty("user.dir") + "/src/test/resources/apps/ApiDemos-debug.apk");
+
+        AndroidDriver androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        androidDriver.findElement(AppiumBy.accessibilityId("Views")).click();
+
+        GestureUtils.verticalScroll(androidDriver);
+    }
+
+    @Test(groups = "dragDropTest")
+    public void verifyDragDrop() throws MalformedURLException {
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("Krish_Pixel_4_API_30");
+        options.setApp(System.getProperty("user.dir") + "/src/test/resources/apps/ApiDemos-debug.apk");
+
+        AndroidDriver androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        androidDriver.findElement(AppiumBy.accessibilityId("Views")).click();
+        androidDriver.findElement(AppiumBy.accessibilityId("Drag and Drop")).click();
+
+        WebElement source = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_dot_1"));
+        WebElement target = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_dot_2"));
+
+        GestureUtils.dragDrop(source, target, androidDriver);
+
+        String actualDropMessage = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_result_text")).getText().trim();
+
+        Assert.assertEquals(actualDropMessage, "Dropped!", "The drag and drop is unsuccessful");
     }
 
 }
