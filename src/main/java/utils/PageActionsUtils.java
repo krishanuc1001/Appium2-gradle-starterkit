@@ -12,9 +12,9 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class GestureUtils {
+public class PageActionsUtils {
 
-    private GestureUtils() {
+    private PageActionsUtils() {
     }
 
     private static final String FINGER1 = "finger1";
