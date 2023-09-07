@@ -14,6 +14,8 @@ repositories {
 dependencies {
     implementation "io.appium:java-client:${appiumJavaClientVersion}"
     testImplementation "org.testng:testng:${testNGVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    implementation "com.aventstack:extentreports:${extentReportVersion}"
 }
 
 test {
@@ -30,10 +32,12 @@ test {
 
         options {
             setParallel('methods')
-            setThreadCount(5)
+            setThreadCount(1)
         }
 
         outputDirectory = file("$projectDir/testNGOutput")
+
+        suites('testng.xml')
 
     }
 
