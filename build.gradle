@@ -12,10 +12,18 @@ repositories {
 }
 
 dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
     implementation "io.appium:java-client:${appiumJavaClientVersion}"
+    implementation "org.seleniumhq.selenium:selenium-java:${seleniumJavaVersion}"
+    implementation "com.aventstack:extentreports:${extentReportVersion}"
+
     testImplementation "org.testng:testng:${testNGVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
-    implementation "com.aventstack:extentreports:${extentReportVersion}"
 }
 
 test {
