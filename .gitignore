@@ -34,3 +34,6 @@ out/
 .git/
 bin/
 output/
+
+# Extent report
+ExtentReports-output
