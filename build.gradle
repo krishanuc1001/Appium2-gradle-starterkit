@@ -21,8 +21,10 @@ dependencies {
     implementation "io.appium:java-client:${appiumJavaClientVersion}"
     implementation "org.seleniumhq.selenium:selenium-java:${seleniumJavaVersion}"
     implementation "com.aventstack:extentreports:${extentReportVersion}"
+    implementation "org.testng:testng:${testNGVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    testImplementation "org.testng:testng:${testNGVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
 }
 
@@ -30,7 +32,7 @@ test {
 
     useTestNG() {
 
-        useDefaultListeners = false
+        listeners << 'com.tw.testUtilities.listeners.TestNGListener'
         testLogging.showStandardStreams = true
 
         if (project.hasProperty('groups')) {
@@ -43,9 +45,9 @@ test {
             setThreadCount(1)
         }
 
-        outputDirectory = file("$projectDir/testNGOutput")
+        outputDirectory = file("$buildDir/testng-output")
 
-        suites('testng.xml')
+        suites('suite-runner/testng.xml')
 
     }
 

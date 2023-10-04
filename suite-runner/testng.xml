@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+
+    <listeners>
+        <listener class-name="com.tw.testUtilities.listeners.TestNGListener"/>
+    </listeners>
+
+    <test verbose="2" preserve-order="true" name="Mobile tests">
+        <classes>
+            <class name="com.tw.tests.SampleTests">
+                <methods>
+                    <include name="verifyLaunchPageIOS"/>
+                </methods>
+            </class>
+
+            <class name="com.tw.tests.HomePageTests">
+                <methods>
+                    <include name="verifyDragAndDrop"/>
+                </methods>
+            </class>
+
+            <class name="com.tw.tests.DataProviderDemoTest">
+                <methods>
+                    <include name="verifyDragAndDropWithDataProvider"/>
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+</suite>
