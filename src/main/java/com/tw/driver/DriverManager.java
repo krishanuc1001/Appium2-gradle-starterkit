@@ -1,21 +1,23 @@
 package com.tw.driver;
 
+import io.appium.java_client.AppiumDriver;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Objects;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DriverManager {
 
-    private DriverManager() {}
-
     // Thread Local
-    private static final ThreadLocal<WebDriver> dr = new ThreadLocal<>();
+    public static final ThreadLocal<AppiumDriver> dr = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
         return dr.get();
     }
 
-    public static void setDriver(WebDriver driverRef) {
+    public static void setDriver(AppiumDriver driverRef) {
         if (Objects.nonNull(driverRef)) {
             dr.set(driverRef);
         }
@@ -24,6 +26,5 @@ public final class DriverManager {
     public static void removeDriver() {
         dr.remove();
     }
-
 
 }
