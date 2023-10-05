@@ -1,11 +1,15 @@
 package com.tw.driver;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 
 public interface IDriver {
 
-    public AndroidDriver getDriver() throws MalformedURLException;
-    public AndroidDriver getDriver(String browser) throws MalformedURLException;
+    AppiumDriver getDriver() throws MalformedURLException;
+
+    AppiumDriver getDriver(Map<String, String> map) throws MalformedURLException;
+
+    AppiumDriver getDriver(String browser, Map<String, String> map) throws MalformedURLException;
 }
