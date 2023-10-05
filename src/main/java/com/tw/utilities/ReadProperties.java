@@ -1,5 +1,6 @@
 package com.tw.utilities;
 
+import com.tw.constants.FrameworkConstants;
 import com.tw.exceptions.PropertyFileException;
 
 import java.io.FileInputStream;
@@ -19,13 +20,9 @@ public class ReadProperties {
 
 
     static {
-        try (FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/test/resources/config/config.properties")) {
+        try (FileInputStream file = new FileInputStream(FrameworkConstants.getCONFIGPROPFILEPATH())) {
             properties.load(file);
-            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                String key = String.valueOf(entry.getKey());
-                String value = String.valueOf(entry.getValue());
-                CONFIGMAP.put(key, value);
-            }
+            properties.forEach((key, value) -> CONFIGMAP.put(String.valueOf(key).trim(), String.valueOf(value).trim()));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
