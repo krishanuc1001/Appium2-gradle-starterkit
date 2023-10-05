@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.tw.extentReporting.ExtentLogger.pass;
+import static com.tw.extentreporting.ExtentLogger.pass;
 import static io.netty.util.internal.PlatformDependent.isAndroid;
 
 public class PageActionsUtils {
