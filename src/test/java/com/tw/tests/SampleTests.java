@@ -1,11 +1,8 @@
-package android;
+package com.tw.tests;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
+import base.BaseTest;
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.tw.utilities.PageActionsUtils;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -13,16 +10,12 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-import utils.PageActionsUtils;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -30,28 +23,13 @@ import java.net.URL;
 import java.time.Duration;
 
 @Test(groups = "mobTests")
-public class SampleTests {
-
-    ExtentReports extentReports;
-
-    @BeforeSuite
-    public void setup() {
-        extentReports = new ExtentReports();
-        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/ExtentReports/index.html");
-        extentSparkReporter.config().setTheme(Theme.DARK);
-        extentSparkReporter.config().setReportName("Automation Report");
-        extentSparkReporter.config().setDocumentTitle("Appium Extent Report");
-
-        extentReports.attachReporter(extentSparkReporter);
-    }
+public class SampleTests extends BaseTest {
 
     @Test(groups = "androidTest")
     public void verifyLaunchPageAndroid() throws MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("Krish_Pixel_4_API_30");
         options.setApp(System.getProperty("user.dir") + "/src/test/resources/apps/Android-MyDemoAppRN.1.3.0.build-244.apk");
-
-        ExtentTest extentTest = extentReports.createTest("Appium test");
 
         AndroidDriver androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
 
@@ -61,11 +39,6 @@ public class SampleTests {
         androidDriver.findElement(AppiumBy.accessibilityId("Username input field")).sendKeys("bob@example.com");
         androidDriver.findElement(AppiumBy.accessibilityId("Password input field")).sendKeys("10203040");
         androidDriver.findElement(AppiumBy.accessibilityId("Login button")).click();
-
-        extentTest.pass("<<============== User logged in ==============>>");
-        extentTest.pass(MediaEntityBuilder.
-                createScreenCaptureFromBase64String(((TakesScreenshot) androidDriver).getScreenshotAs(OutputType.BASE64)).build());
-
     }
 
     @Test(groups = "iOSTest")
@@ -82,7 +55,6 @@ public class SampleTests {
         iosDriver.findElement(AppiumBy.accessibilityId("Username input field")).sendKeys("bob@example.com");
         iosDriver.findElement(AppiumBy.accessibilityId("Password input field")).sendKeys("10203040");
         iosDriver.findElement(AppiumBy.accessibilityId("Login button")).click();
-
     }
 
     @Test(groups = "tapTest")
@@ -93,8 +65,7 @@ public class SampleTests {
 
         AndroidDriver androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
 
-        WebElement openMenu = androidDriver.findElement(AppiumBy.accessibilityId("open menu"));
-        PageActionsUtils.tap(openMenu, androidDriver);
+        PageActionsUtils.tap(AppiumBy.accessibilityId("open menu"));
     }
 
     @Test(groups = "longPressTest")
@@ -112,7 +83,7 @@ public class SampleTests {
         WebElement peopleName = androidDriver.findElement(AppiumBy.xpath(".//*[@text='People Names']"));
 
         // Method 1: Using Sequence class
-        PageActionsUtils.longPress(peopleName, androidDriver);
+        PageActionsUtils.longPress(AppiumBy.xpath(".//*[@text='People Names']"));
 
         // Method 2: Using Actions class
         new Actions(androidDriver).clickAndHold(peopleName).perform();
@@ -130,25 +101,7 @@ public class SampleTests {
 
         Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(1));
 
-        WebElement drawingScreen = androidDriver.findElement(AppiumBy.xpath("//android.view.ViewGroup[@content-desc=\"drawing screen\"]/android.view.ViewGroup[2]/android.view.ViewGroup/android.webkit.WebView"));
-
-        PageActionsUtils.zoom(drawingScreen, androidDriver);
-    }
-
-    @Test(groups = "verticalScrollTest")
-    public void verifySwipeScroll() throws MalformedURLException {
-        UiAutomator2Options options = new UiAutomator2Options();
-        options.setDeviceName("Krish_Pixel_4_API_30");
-        options.setApp(System.getProperty("user.dir") + "/src/test/resources/apps/ApiDemos-debug.apk");
-
-        AndroidDriver androidDriver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-        androidDriver.findElement(AppiumBy.accessibilityId("Views")).click();
-
-//        PageActionsUtils.verticalScroll(androidDriver);
-
-        androidDriver.findElement(AppiumBy.androidUIAutomator(
-                "new UiScrollable(new UISelector()).scrollIntoView(text(\"Radio Group\"))"));
-
+        PageActionsUtils.zoom(AppiumBy.xpath("//android.view.ViewGroup[@content-desc='drawing screen']/android.view.ViewGroup[2]/android.view.ViewGroup/android.webkit.WebView"));
     }
 
     @Test(groups = "dragDropTest")
@@ -161,10 +114,10 @@ public class SampleTests {
         androidDriver.findElement(AppiumBy.accessibilityId("Views")).click();
         androidDriver.findElement(AppiumBy.accessibilityId("Drag and Drop")).click();
 
-        WebElement source = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_dot_1"));
-        WebElement target = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_dot_2"));
+        By source = AppiumBy.id("io.appium.android.apis:id/drag_dot_1");
+        By target = AppiumBy.id("io.appium.android.apis:id/drag_dot_2");
 
-        PageActionsUtils.dragDrop(source, target, androidDriver);
+        PageActionsUtils.dragAndDrop(source, target);
 
         String actualDropMessage = androidDriver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_result_text")).getText().trim();
 
@@ -207,8 +160,4 @@ public class SampleTests {
         System.out.println("Page Title: " + androidDriver.getTitle());
     }
 
-    @AfterSuite
-    public void tearDown() {
-        extentReports.flush();
-    }
 }
